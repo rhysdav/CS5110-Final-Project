@@ -4,11 +4,13 @@ class Candidate(object):
         preferred_category,
         courses,
         gpa,
+        proficient_languages,
         skills,
         years_experience,
         experience_category,
         projects,
         min_salary,
+        personality_score,
         degree_name=None,
         minor_name=None,
         degree_level='BS'):
@@ -16,13 +18,15 @@ class Candidate(object):
         self.preferred_category = preferred_category
         self.courses = courses
         self.gpa = gpa
+        self.proficient_languages = proficient_languages
         self.skills = skills
         self.years_experience = years_experience
         self.experience_category = experience_category
         self.projects = projects
         self.min_salary = min_salary
-        self.degree_name = degree_name,
-        self.minor_name = minor_name,
+        self.personality_score = personality_score
+        self.degree_name = degree_name
+        self.minor_name = minor_name
         self.degree_level = degree_level
 
     def set_base_utility(self, base_utility):
@@ -41,6 +45,9 @@ class Candidate(object):
 
     def set_gpa(self, gpa):
         self.gpa = gpa
+
+    def set_proficient_languages(self, proficient_languages):
+        self.proficient_languages = proficient_languages
 
     def set_skills(self, skills):
         self.skills = skills
