@@ -4,7 +4,7 @@ class Employer(object):
         employer_category,
         preferred_candidate_category,
         min_salary_offered,
-        preferred_gpa,
+        min_gpa,
         required_years_experience,
         preferred_skils,
         preferred_degree_name=None,
@@ -14,7 +14,7 @@ class Employer(object):
         self.preferred_candidate_category = preferred_candidate_category
         self.preferred_degree_name = preferred_degree_name
         self.preferred_minor_name = preferred_minor_name
-        self.preferred_gpa = preferred_gpa
+        self.min_gpa = min_gpa
         self.required_years_experience = required_years_experience
         self.preferred_skills = preferred_skils
         self.min_salary_offered = min_salary_offered
@@ -34,8 +34,8 @@ class Employer(object):
     def set_preferred_minor_name(self, name):
         self.preferred_minor_name = name
 
-    def set_preferred_gpa(self, gpa):
-        self.preferred_gpa = gpa
+    def set_min_gpa(self, gpa):
+        self.min_gpa = gpa
 
     def set_required_years_experience(self, years):
         self.required_years_experience = years

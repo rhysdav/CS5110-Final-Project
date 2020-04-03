@@ -6,8 +6,29 @@ from lib.Minors import Minors
 from calculator.UtilityCalculator import UtilityCalculator
 
 
-class CandidateFactory(object):
-    """Generates Employer criteria."""
+class EmployerFactory(object):
+    """
+    Generates Employer criteria.
+
+    -------- NOTES --------
+    employer category == preferred candidate category?
+
+    SALARY
+        * Should employers have a max salary?
+        * min salary offered goes up $10,000 for each one year of experience
+
+    SKILLS
+        * Preferred skills generated for an employer are the same for candidates currently
+        * those skills could have weights assigned to them, signifying which skills are desired
+
+    DEGREE & MINOR
+        * How should minors and degrees be determined?
+
+    GPA
+        * min accepted GPA is random between 2.0 and 4.0
+        * should there even be a GPA associated with Employer?
+
+    """
 
     def __init__(self):
         super(EmployerFactory, self).__init__()
@@ -18,19 +39,23 @@ class CandidateFactory(object):
         preferred_candidate_category = JobCategories.get(JobCategories, const_type=job_category)
 
         required_years_experience = random.randint(0, 4)
-        preferred_skills = self.generateSkillsNeeded(self, employer_category)
+
+        increase = 35000 + required_years_experience * 10000
+        min_salary_offered = random.randrange(increase, increase + 15000, 3000)
+
+        min_gpa = round(random.randrange(2.0, 4.0) + random.random(), 2)
+
+        preferred_skills = self.generateSkillsNeeded(employer_category)
 
         minor_name = Minors.get(Minors, const_type='MATH')
-        degree_name = Degrees.get(Degrees, const_type='BACHELOR_CS')
-
-
+        degree_name = Degrees.get(Degrees, const_type='BACHELORS_CS')
 
         employer = Employer(
             base_utility=0.0,
             employer_category=employer_category,
             preferred_candidate_category=preferred_candidate_category,
-            min_salary_offered=random.randrange(35000, 50000, 3000),
-            preferred_gpa=round(random.randrange(2.0, 4.0) + random.random(), 2),
+            min_salary_offered=min_salary_offered,
+            min_gpa=min_gpa,
             required_years_experience=required_years_experience,
             preferred_skils=preferred_skills,
             preferred_degree_name=degree_name,
@@ -38,7 +63,7 @@ class CandidateFactory(object):
         )
 
         calculator = UtilityCalculator()
-        employer.set_base_utility(calculator.calclulateCandidateBaseUtility(employer))
+        employer.set_base_utility(calculator.calculateEmployerBaseUtility(employer))
 
         return employer
 
@@ -52,7 +77,7 @@ class CandidateFactory(object):
         while len(employers) < num_employers:
             employers.append(self.generateEmployer('WEB_MOBILE'))
 
-        return candidates
+        return employers
 
 
     def generateSkillsNeeded(self, job_category):
@@ -68,7 +93,7 @@ class CandidateFactory(object):
         else:
             skills_pool = ['Unity', 'Maya', 'CryEngine', 'Unreal Engine', 'AI', 'Animation', 'Game Design', 'C++', 'C#', 'Gimp', 'Blender', 'Objective-C']
 
-        num_skills = random.randint(3,7)
+        num_skills = random.randint(3, 7)
         while len(add_skills) < num_skills:
             choice = random.choice(skills_pool)
             if choice not in add_skills:
