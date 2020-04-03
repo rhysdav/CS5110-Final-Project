@@ -48,7 +48,7 @@ class Candidate(object):
     def add_skill(self, skill):
         skills = self.skills
         skills.append(skill)
-        self.skills = skillls
+        self.skills = skills
 
     def set_years_experience(self, years_experience):
         self.years_experience = years_experience
