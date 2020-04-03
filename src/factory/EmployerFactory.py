@@ -42,15 +42,15 @@ class CandidateFactory(object):
 
         return employer
 
-    def generateCandidates(self, num_candidates, categories={'WEB_MOBILE': 0.6, 'DATA_SCIENCE_ML': 0.2, 'EMBEDDED_SYSTEMS': 0.1, 'GAME_DEV': 0.1}):
-        candidates = []
+    def generateEmployers(self, num_employers, categories={'WEB_MOBILE': 0.6, 'DATA_SCIENCE_ML': 0.2, 'EMBEDDED_SYSTEMS': 0.1, 'GAME_DEV': 0.1}):
+        employers = []
 
         for category, percent in categories.items():
-            for _ in range(int(num_candidates * percent)):
-                candidates.append(self.generateCandidate(category))
+            for _ in range(int(num_employers * percent)):
+                employers.append(self.generateEmployer(category))
 
-        while len(candidates) < num_candidates:
-            candidates.append(self.generateCandidate('WEB_MOBILE'))
+        while len(employers) < num_employers:
+            employers.append(self.generateEmployer('WEB_MOBILE'))
 
         return candidates
 
@@ -75,21 +75,3 @@ class CandidateFactory(object):
                 add_skills.append(choice)
 
         return add_skills
-
-    def generateCandidateProjects(self, courses):
-        # please add any additional skills you can think of
-        skills_pool = ['Django', 'JavaScript', 'Game development', 'Technial Writing', 'AI', 'ML', 'Web Application', 'Neural Networks', 'Cryptosystem', 'Embedded System', 'System design', 'Computer Vision', 'Compiliers', 'AWS', 'SQL', 'Node']
-        projects = []
-
-        for _ in range(random.randint(0,3)):
-            temp_skills = []
-            num_skills = random.randint(1,4)
-
-            while len(temp_skills) < num_skills:
-                choice = random.choice(skills_pool)
-                if choice not in temp_skills:
-                    temp_skills.append(choice)
-
-            projects.append({'skills': temp_skills})
-
-        return projects
