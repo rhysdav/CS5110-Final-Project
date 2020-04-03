@@ -28,6 +28,9 @@ class EmployerFactory(object):
         * min accepted GPA is random between 2.0 and 4.0
         * should there even be a GPA associated with Employer?
 
+    WEIGHTING
+        
+
     """
 
     def __init__(self):
