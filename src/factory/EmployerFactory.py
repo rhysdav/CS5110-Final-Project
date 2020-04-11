@@ -53,6 +53,8 @@ class EmployerFactory(object):
         minor_name = Minors.get(Minors, const_type='MATH')
         degree_name = Degrees.get(Degrees, const_type='BACHELORS_CS')
 
+        weights = self.generateWeights()
+
         employer = Employer(
             base_utility=0.0,
             employer_category=employer_category,
@@ -61,6 +63,7 @@ class EmployerFactory(object):
             min_gpa=min_gpa,
             required_years_experience=required_years_experience,
             preferred_skils=preferred_skills,
+            weights=weights,
             preferred_degree_name=degree_name,
             preferred_minor_name=minor_name
         )
@@ -103,3 +106,17 @@ class EmployerFactory(object):
                 add_skills.append(choice)
 
         return add_skills
+
+    def generateWeights(self):
+        max_weight = 5.0
+        weights = {}
+        weights['preferred_candidate_category'] = random.uniform(max_weight*0.4, max_weight)
+        weights['min_gpa'] = random.uniform(max_weight*0.1, max_weight*0.5)
+        weights['required_years_experience'] = random.uniform(max_weight*0.5, max_weight)
+        weights['preferred_skills'] = random.uniform(max_weight*0.3, max_weight)
+        weights['preferred_degree_name'] = random.uniform(max_weight*0.5, max_weight)
+        weights['preferred_minor_name'] = random.uniform(max_weight*0.2, max_weight*0.6)
+        weights['personality_score'] = random.uniform(0, max_weight)
+        weights['projects'] = random.uniform(0.5*max_weight, max_weight)
+        weights['coding_exam'] = random.uniform(0.2*max_weight, max_weight)
+        return weights

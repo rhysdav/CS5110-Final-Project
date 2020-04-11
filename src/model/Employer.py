@@ -7,6 +7,7 @@ class Employer(object):
         min_gpa,
         required_years_experience,
         preferred_skils,
+        weights,
         preferred_degree_name=None,
         preferred_minor_name=None):
         self.base_utility = base_utility
@@ -18,6 +19,7 @@ class Employer(object):
         self.required_years_experience = required_years_experience
         self.preferred_skills = preferred_skils
         self.min_salary_offered = min_salary_offered
+        self.weights = weights
 
     def set_base_utility(self, base_utility):
         self.base_utility = base_utility
@@ -50,6 +52,9 @@ class Employer(object):
 
     def set_min_salary_offered(self, salary):
         self.min_salary_offered = salary
+
+    def set_weight(self, name, weight):
+        self.weights[name] = weight
 
 
 
