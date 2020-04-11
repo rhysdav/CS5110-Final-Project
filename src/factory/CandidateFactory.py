@@ -5,7 +5,6 @@ from lib.JobCategories import JobCategories
 from lib.Degrees import Degrees
 from lib.Minors import Minors
 from lib.CourseCatalog import CourseCatalog
-from calculator.UtilityCalculator import UtilityCalculator
 
 
 class CandidateFactory(object):
@@ -68,8 +67,6 @@ class CandidateFactory(object):
             minor_name=minor_name
         )
 
-        calculator = UtilityCalculator()
-        candidate.set_base_utility(calculator.calclulateCandidateBaseUtility(candidate))
 
         return candidate
 

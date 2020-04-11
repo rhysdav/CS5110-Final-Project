@@ -29,7 +29,7 @@ class EmployerFactory(object):
         * should there even be a GPA associated with Employer?
 
     WEIGHTING
-        
+
 
     """
 
@@ -67,9 +67,6 @@ class EmployerFactory(object):
             preferred_degree_name=degree_name,
             preferred_minor_name=minor_name
         )
-
-        calculator = UtilityCalculator()
-        employer.set_base_utility(calculator.calculateEmployerBaseUtility(employer))
 
         return employer
 
