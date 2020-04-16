@@ -27,7 +27,6 @@ def run_test_2():
     employers = factory.generateEmployers(num_employers)
     assert len(employers) == num_employers
 
-
-if __name__ == '__main__':
+def run_all():
     run_test_1()
     run_test_2()

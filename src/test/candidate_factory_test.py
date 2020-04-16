@@ -46,7 +46,6 @@ def run_test_2():
     candidates = factory.generateCandidates(num_candidates)
     assert len(candidates) == num_candidates
 
-
-if __name__ == '__main__':
+def run_all():
     run_test_1()
     run_test_2()
