@@ -95,32 +95,6 @@ class UtilityCalculator(object):
 		if candidate.years_experience >= employer.required_years_experience:
 			utility += employer.weights['required_years_experience'] * (candidate.years_experience - employer.required_years_experience)
 
-		return utility
-
-	def calculateFinalMatchUtility(self, employer, candidate):
-		utility = 0
-
-		# Personality score utility
-		utility += employer.weights['personality_score'] * candidate.personality_score
-
-		# Project evaluation: review each project, give each a score, normalize them and add them to the total utility
-		project_utilities = []
-		for project in candidate.projects:
-			u = 0
-			if project.job_category == employer.preferred_candidate_category:
-				u += self.valuable_quality * employer.weights['projects']
-			for skill in project.skills:
-				if skill in employer.preferred_skills:
-					u += self.valuable_quality
-			if project.project_type == 'personal':
-				u += self.valuable_quality * employer.weights['project']
-			u *= project.length_in_months
-			project_utilities.append(u)
-
-		normalized_project_utilities = [float(u)/max(project_utilities) for u in project_utilities]
-		for ut in normalized_project_utilities:
-			utility += i
-
 		# Coding Exam: random gaussian distribution with higher standard deviation the lower the GPA
 		gpa_score = (candidate.gpa/4.0)*8.0
 		if 10.0 - gpa_score <= 2.5:
@@ -137,6 +111,36 @@ class UtilityCalculator(object):
 			exam_score = 0.0
 
 		utility += exam_score * employer.weights['coding_exam']
+
+		# Personality score utility
+		utility += employer.weights['personality_score'] * candidate.personality_score
+
+		# Project evaluation: review each project, give each a score, normalize them and add them to the total utility
+		project_utilities = []
+		for project in candidate.projects:
+			u = 0
+			if project.job_category == employer.preferred_candidate_category:
+				u += self.valuable_quality * employer.weights['projects']
+			for skill in project.skills:
+				if skill in employer.preferred_skills:
+					u += self.valuable_quality
+			if project.project_type == 'personal':
+				u += self.valuable_quality * employer.weights['projects']
+			u *= project.length_in_months
+			project_utilities.append(u)
+
+		# normalized_project_utilities = [float(u)/max(project_utilities) for u in project_utilities]
+		for ut in project_utilities:
+			utility += ut
+
+		return utility
+
+	def calculateFinalMatchUtility(self, employer, candidate):
+		utility = candidate.base_utility
+
+		# Personality score utility
+		utility += (employer.weights['personality_score'] * candidate.personality_score) * self.valuable_quality
+
 
 		return utility
 

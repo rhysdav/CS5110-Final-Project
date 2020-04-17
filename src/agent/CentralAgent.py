@@ -13,6 +13,13 @@ class CentralAgent(object):
         self.utility_calculator = UtilityCalculator()
         self.final_candidates = [] # candidates in employer qualified_candidates
         self.employer_candidate_matches = [] # final results
+        self.constants = dict(
+            pull1_time_employer = 0.25, # 15 minutes
+            pull2_time_employer = 1, # 1 hour
+            pull2_time_candidate = 2.75, # 2 hours 45 minutes
+            pull3_time_employer = 5,
+            pull3_time_candidate = 1.5
+        )
 
     def initialize(self, num_employers=8, num_candidates=100):
         employers = self.employer_factory.generateEmployers(num_employers)
@@ -32,15 +39,35 @@ class CentralAgent(object):
 
         self.candidates = candidate_agents
 
+    def sort_candidates(self, candidates):
+        # sort candidate list according from highest utility to lowest
+        candidates.sort(key=lambda candidate: candidate.candidate.base_utility, reverse=True)
+        return candidates
+
 
     def arm_pull_1(self):
         # Assign canidates to employer - application process - based on candidate category preferrence
         # Agent will pull highest canidates
-        # costs 15min per candidate
-        pass
+        # costs 15min per candidate to employer
+        categories = {}
+        for employer in self.employers:
+            categories[employer.employer.preferred_candidate_category] = []
+
+        for candidate in self.candidates:
+            if candidate.candidate.preferred_category in categories:
+                categories[candidate.candidate.preferred_category].append(candidate)
+
+        for category, c_list in categories.items():
+            # sort candidate list according from highest utility to lowest
+            c_list = self.sort_candidates(c_list)
+            for employer in self.employers:
+                if employer.employer.preferred_candidate_category == category:
+                    employer.set_candidates(c_list)
+                    employer.use_resources(self.constants['pull1_time_employer']*len(c_list))
 
 
-    def arm_pull_2(self):
+
+    def arm_pull_2(self, k):
         # top k candidates to interview
         # each candidate interview requires 45min
         # first interview / coding exam
@@ -49,14 +76,31 @@ class CentralAgent(object):
         # total cost employer: 1hr
         # total cost candidate: 2h 45m
         # personality_score
-        pass
+        for employer in self.employers:
+            for candidate in employer.qualified_candidates:
+                candidate.candidate.set_base_utility(self.utility_calculator.calculateInitialMatchUtility(employer.employer, candidate.candidate))
+                candidate.use_resources(self.constants['pull2_time_candidate'])
+            candidates = employer.qualified_candidates.copy()
+            candidates = self.sort_candidates(candidates)
+            employer.set_candidates(candidates[:k])
+            employer.use_resources(self.constants['pull2_time_employer']*k)
+
+
 
 
     def arm_pull_3(self):
         # cost employer 5hrs
         # cost candidate 1.5h
         # meeting the team - team & personality_score
-        pass
+        for employer in self.employers:
+            for candidate in employer.qualified_candidates:
+                candidate.candidate.set_base_utility(self.utility_calculator.calculateFinalMatchUtility(employer.employer, candidate.candidate))
+                candidate.use_resources(self.constants['pull3_time_candidate'])
+            candidates = employer.qualified_candidates.copy()
+            candidates = self.sort_candidates(candidates)
+            employer.set_candidates(candidates)
+            employer.use_resources(self.constants['pull3_time_employer']*len(candidates))
+            self.final_candidates.extend(candidates)
 
 
     def salary_negotiation(self):

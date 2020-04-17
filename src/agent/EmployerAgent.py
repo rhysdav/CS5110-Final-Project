@@ -11,6 +11,15 @@ class EmployerAgent(object):
         self.current_offer = self.employer.min_salary_offered
         self.offer_is_too_low = False
 
+    def set_candidates(self, candidates):
+        self.qualified_candidates = candidates
+
+    def add_candidates(self, candidates):
+        if isinstance(candidates, list):
+            self.qualified_candidates.extend(candidates)
+            return
+        self.qualified_candidates.append(candidates)
+
     def has_resources(self, required_resources=0):
         return self.resources > required_resources
 
