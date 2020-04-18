@@ -5,7 +5,7 @@ class EmployerAgent(object):
 
     def __init__(self, employer):
         self.employer = employer
-        self.resources = 7
+        self.resources = 100
         self.qualified_candidates = [] # array of canidates and utilities, with each element = [candidate adjusted utility, candidate agent]
         self.top_candidate = None
         self.current_offer = self.employer.min_salary_offered
@@ -33,19 +33,18 @@ class EmployerAgent(object):
     def set_top_candidate(self):
         qualified_candidates = self.qualified_candidates
         if len(qualified_candidates):
-            self.top_candidate = qualified_candidates.pop(0)
+            self.top_candidate = qualified_candidates.pop(0)[1]
             self.qualified_candidates = qualified_candidates
-            return candidate
+            return True
         else:
             self.top_candidate = None
-
         return False
 
     def extend_offer(self, offer_was_low=False, get_next_top_candidate=False):
         candidate = self.top_candidate
 
         if candidate is None or get_next_top_candidate:
-            self.set_top_candidate
+            self.set_top_candidate()
             candidate = self.top_candidate
 
         if candidate and candidate.min_salary <= self.employer.max_salary_offered:

@@ -1,5 +1,6 @@
 class Employer(object):
     def __init__(self,
+        uuid,
         base_utility,
         employer_category,
         preferred_candidate_category,
@@ -7,9 +8,12 @@ class Employer(object):
         min_gpa,
         required_years_experience,
         preferred_skills,
+        max_salary_offered,
+        team_score,
         weights,
         preferred_degree_name=None,
         preferred_minor_name=None):
+        self.uuid = uuid
         self.base_utility = base_utility
         self.employer_category = employer_category
         self.preferred_candidate_category = preferred_candidate_category
@@ -19,6 +23,8 @@ class Employer(object):
         self.required_years_experience = required_years_experience
         self.preferred_skills = preferred_skills
         self.min_salary_offered = min_salary_offered
+        self.max_salary_offered = max_salary_offered
+        self.team_score = team_score
         self.weights = weights
 
     def set_base_utility(self, base_utility):
@@ -49,6 +55,9 @@ class Employer(object):
         skills = self.preferred_skills
         skills.append(skill)
         self.preferred_skills = skills
+
+    def set_min_salary_offered(self, salary):
+        self.min_salary_offered = salary
 
     def set_min_salary_offered(self, salary):
         self.min_salary_offered = salary

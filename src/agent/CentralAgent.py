@@ -59,7 +59,7 @@ class CentralAgent(object):
             preferred_category = candidate.candidate.preferred_category
             if preferred_category in categories:
                 categories[preferred_category].append([candidate.candidate.base_utility, candidate])
-                candidate.use_resources(self.constants['pull1_time_candidate'] * sum([e.employer.employer_category == preferred_category for e in self.employers]))
+                # candidate.use_resources(self.constants['pull1_time_candidate'] * sum([e.employer.employer_category == preferred_category for e in self.employers]))
 
         for category, c_list in categories.items():
             # sort candidate list according from highest utility to lowest
@@ -67,7 +67,7 @@ class CentralAgent(object):
             for employer in self.employers:
                 if employer.employer.employer_category == category:
                     employer.set_candidates(c_list)
-                    employer.use_resources(self.constants['pull1_time_employer'] * len(c_list))
+                    # employer.use_resources(self.constants['pull1_time_employer'] * len(c_list))
 
 
     def arm_pull_2(self, k):
@@ -87,7 +87,7 @@ class CentralAgent(object):
             candidates = employer.qualified_candidates.copy()
             candidates = self.sort_candidates(candidates)
             employer.set_candidates(candidates[:k])
-            employer.use_resources(self.constants['pull2_time_employer'] * k)
+            # employer.use_resources(self.constants['pull2_time_employer'] * k)
 
 
     def arm_pull_3(self, k):
@@ -102,7 +102,7 @@ class CentralAgent(object):
             candidates = employer.qualified_candidates.copy()
             candidates = self.sort_candidates(candidates)
             employer.set_candidates(candidates[:k])
-            employer.use_resources(self.constants['pull3_time_employer'] * k)
+            # employer.use_resources(self.constants['pull3_time_employer'] * k)
             self.final_candidates.extend(candidates)
 
 
@@ -110,38 +110,40 @@ class CentralAgent(object):
         employers_done = []
         candidates_done = []
 
-        while len(employers_done) < len(self.employers):
+        while len(self.employer_candidate_matches) < len(self.employers):
             # employer offer round
             for employer_agent in self.employers:
-                if employer_agent not in employers_done:
+                if employer_agent.employer.uuid not in employers_done:
                     offer = employer_agent.extend_offer()
                     candidate_agent = employer_agent.top_candidate
 
-                    while candidate_agent in candidates_done and offer:
+                    while (candidate_agent.candidate.uuid in candidates_done and offer):
                         offer = employer_agent.extend_offer(get_next_top_candidate=True)
-                        candidate_agent = offer[0]
+                        if offer:
+                            candidate_agent = offer[0]
+                        else:
+                            break
 
                     if offer:
                         candidate_agent.add_offer(offer[1])
                     else:
-                        employers_done.append(employer_agent)
+                        employers_done.append(employer_agent.employer.uuid)
+                        self.employer_candidate_matches.append((False, employer_agent.employer, False))
 
             # candidate acceptance round
             for candidate in self.final_candidates:
                 adjusted_utility, candidate_agent = candidate
-                if candidate_agent in candidates_done:
-                    self.final_candidates.remove(candidate_agent)
-                else:
+                if candidate_agent not in candidates_done:
                     if len(candidate_agent.offers): # candidate may not have offers on first round, but receive offers later
                         accepted = candidate_agent.consider_offers()
                         if accepted[0]:
                             accepted_flag, offer_amount, employer_agent = accepted
                             self.employer_candidate_matches.append((candidate_agent.candidate, employer_agent.employer, offer_amount))
-                            employers_done.append(employer_agent)
-                            candidates_done.append(candidate_agent)
-                            self.final_candidates.remove(candidate_agent)
+                            employers_done.append(employer_agent.employer.uuid)
+                            candidates_done.append(candidate_agent.candidate.uuid)
                         else:
                             offers = accepted[1]
-                            for offer in offers:
-                                # tell employer offer is too low
-                                offer[1].offer_is_too_low = True
+                            if offers is not None:
+                                for offer in offers:
+                                    # tell employer offer is too low
+                                    offer[1].offer_is_too_low = True

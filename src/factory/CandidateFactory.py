@@ -1,4 +1,5 @@
 import random
+from uuid import uuid4
 from model.Candidate import Candidate
 from model.CandidateProject import CandidateProject
 from lib.JobCategories import JobCategories
@@ -52,6 +53,7 @@ class CandidateFactory(object):
                 preferred_category = JobCategories.CONSTANTS[random.choice(list(JobCategories.CONSTANTS.keys()))]
 
         candidate = Candidate(
+            uuid=uuid4(),
             base_utility=0.0,
             preferred_category=preferred_category,
             courses=courses,
@@ -70,7 +72,7 @@ class CandidateFactory(object):
 
         return candidate
 
-    def generateCandidates(self, num_candidates, categories={'WEB_MOBILE': 0.6, 'DATA_SCIENCE_ML': 0.2, 'EMBEDDED_SYSTEMS': 0.1, 'GAME_DEV': 0.1}):
+    def generateCandidates(self, num_candidates,  categories={'WEB_MOBILE': 0.45, 'DATA_SCIENCE_ML': 0.3, 'EMBEDDED_SYSTEMS': 0.1, 'GAME_DEV': 0.15}):
         candidates = []
 
         for category, percent in categories.items():

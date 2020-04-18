@@ -1,4 +1,5 @@
 import random
+from uuid import uuid4
 from model.Employer import Employer
 from lib.JobCategories import JobCategories
 from lib.Degrees import Degrees
@@ -41,10 +42,18 @@ class EmployerFactory(object):
         employer_category = JobCategories.get(JobCategories, const_type=job_category)
         preferred_candidate_category = JobCategories.get(JobCategories, const_type=job_category)
 
-        required_years_experience = random.randint(0, 4)
+        required_years_experience = random.randint(0, 5)
 
-        increase = 35000 + required_years_experience * 10000
-        min_salary_offered = random.randrange(increase, increase + 15000, 3000)
+        base = 35000
+        increase = 35000 + (required_years_experience if required_years_experience else 1 * 1000)
+
+        if employer_category == 'DATA_SCIENCE_ML':
+            increase += random.randrange(5000, 10000, 1000)
+        if employer_category == 'GAME_DEV':
+            base -= random.randrange(3000, 5000, 1000)
+
+        min_salary_offered = random.randrange(35000, increase, 1000)
+        max_salary_offered = random.randrange(increase, 75000, 3000)
 
         min_gpa = round(random.randrange(2.0, 4.0) + random.random(), 2)
 
@@ -56,6 +65,7 @@ class EmployerFactory(object):
         weights = self.generateWeights()
 
         employer = Employer(
+            uuid=uuid4(),
             base_utility=0.0,
             employer_category=employer_category,
             preferred_candidate_category=preferred_candidate_category,
@@ -63,6 +73,8 @@ class EmployerFactory(object):
             min_gpa=min_gpa,
             required_years_experience=required_years_experience,
             preferred_skills=preferred_skills,
+            max_salary_offered=max_salary_offered,
+            team_score=random.randint(1,10),
             weights=weights,
             preferred_degree_name=degree_name,
             preferred_minor_name=minor_name
@@ -70,7 +82,7 @@ class EmployerFactory(object):
 
         return employer
 
-    def generateEmployers(self, num_employers, categories={'WEB_MOBILE': 0.6, 'DATA_SCIENCE_ML': 0.2, 'EMBEDDED_SYSTEMS': 0.1, 'GAME_DEV': 0.1}):
+    def generateEmployers(self, num_employers, categories={'WEB_MOBILE': 0.45, 'DATA_SCIENCE_ML': 0.3, 'EMBEDDED_SYSTEMS': 0.1, 'GAME_DEV': 0.15}):
         employers = []
 
         for category, percent in categories.items():

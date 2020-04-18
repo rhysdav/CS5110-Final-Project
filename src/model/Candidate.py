@@ -1,5 +1,6 @@
 class Candidate(object):
     def __init__(self,
+        uuid,
         base_utility,
         preferred_category,
         courses,
@@ -14,6 +15,7 @@ class Candidate(object):
         degree_name=None,
         minor_name=None,
         degree_level='BS'):
+        self.uuid = uuid
         self.base_utility = base_utility
         self.preferred_category = preferred_category
         self.courses = courses

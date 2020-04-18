@@ -14,5 +14,5 @@ def run_factory_tests():
 
 
 if __name__ == '__main__':
-    run_factory_tests()
+    # run_factory_tests()
     central_agent_test()

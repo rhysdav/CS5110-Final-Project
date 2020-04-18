@@ -6,7 +6,7 @@ class CandidateAgent(object):
     def __init__(self, candidate):
         self.candidate = candidate
         self.num_applications = 1
-        self.resources = 5.5
+        self.negotiation_resources = 100
         self.offers = [] # contains tuples with ($ offer amount, EmployerAgent)
         self.min_salary = candidate.min_salary
         self.current_highest_offer = 0
@@ -32,6 +32,10 @@ class CandidateAgent(object):
         offers.append(offer)
         self.offers = offers
 
+    def reset_offers(self):
+        # clears old offers
+        self.offers = []
+
     def check_all_offers_equal(self):
         # checks if offers are equal and if so, returns offer with highest employer team score
         all_offers_are_equal = False
@@ -43,18 +47,19 @@ class CandidateAgent(object):
                 all_offers_are_equal = False
 
         if all_offers_are_equal:
-            offers = sorted(offers, key=lambda x: x[1].employer.base_utility) #using base_utility as team score for now
+            offers = sorted(offers, key=lambda x: x[1].employer.team_score) #sort by team score
             return (True, offers[0])
 
         return False
 
     def consider_offers(self):
-        if len(offers):
+        if len(self.offers):
             offers = sorted(self.offers, key=lambda x: x[0]) #sort offers by amount
 
-            if offers[0][0] >= min_salary and offers[0][0] == self.current_highest_offer:
+            if offers[0][0] >= self.min_salary and offers[0][0] == self.current_highest_offer:
                 # candidate has already tried to get higher offer from higest offering employer but
                 # employer was unwilling to go higher
+                self.reset_offers()
                 return (True, offers[0][0], offers[0][1])
             else:
                 self.current_highest_offer = offers[0][0]
@@ -65,7 +70,8 @@ class CandidateAgent(object):
 
             if self.use_resources(1):
                 if offers[0][0] >= self.min_salary: # check highest offer is acceptable
-                    top_offer_from_equal =  self.all_offers_are_equal()
+                    top_offer_from_equal =  self.check_all_offers_equal()
+                    self.reset_offers()
                     if top_offer_from_equal:
                         if randint(0,1): # if 0, candidate doesn't care about team score and will try to get a higher offer
                             return (True, top_offer_from_equal[0], top_offer_from_equal[1])
@@ -79,6 +85,7 @@ class CandidateAgent(object):
 
                 elif self.has_resources(1):
                     # All offers are too low
+                    self.reset_offers()
                     return (False, offers)
 
         return (False, None)
