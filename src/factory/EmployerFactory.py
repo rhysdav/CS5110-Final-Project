@@ -117,15 +117,19 @@ class EmployerFactory(object):
         return add_skills
 
     def generateWeights(self):
-        max_weight = 5.0
+        total_points = 50
+        weight_attributes = ['preferred_candidate_category', 'min_gpa', 'required_years_experience', \
+            'required_years_experience', 'preferred_skills', 'preferred_degree_name', 'preferred_minor_name', \
+            'personality_score', 'projects', 'coding_exam']
+        max_points = int(total_points/int(len(weight_attributes)/2))
         weights = {}
-        weights['preferred_candidate_category'] = random.uniform(max_weight*0.4, max_weight)
-        weights['min_gpa'] = random.uniform(max_weight*0.1, max_weight*0.5)
-        weights['required_years_experience'] = random.uniform(max_weight*0.5, max_weight)
-        weights['preferred_skills'] = random.uniform(max_weight*0.3, max_weight)
-        weights['preferred_degree_name'] = random.uniform(max_weight*0.5, max_weight)
-        weights['preferred_minor_name'] = random.uniform(max_weight*0.2, max_weight*0.6)
-        weights['personality_score'] = random.uniform(0, max_weight)
-        weights['projects'] = random.uniform(0.5*max_weight, max_weight)
-        weights['coding_exam'] = random.uniform(0.2*max_weight, max_weight)
+        for att in weight_attributes:
+            if total_points > max_points:
+                points = random.randrange(max_points+1)
+            elif total_points > 0:
+                points = random.randrange(total_points+1)
+            else:
+                points = 0
+            weights[att] = points
+            total_points -= points
         return weights

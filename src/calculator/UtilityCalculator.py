@@ -9,6 +9,7 @@ class UtilityCalculator(object):
 		self.gpa_scale_constant = 1/4
 		self.max_candidate_ut = 54  # To find this maximum, I generated 1000 random candidates and this was the max utility I got
 		self.max_employer_ut = 20
+		self.coding_exam_scale = 25.0 # This is the maximum a candidate's gpa translates to their average coding exam score (e.g 4.0 gpa = 25 utility points)
 
   #   def normalizedUtility(self, ut, max_ut):
   #   	# Returns the normalized utility for a candidate given the maximum
@@ -95,23 +96,6 @@ class UtilityCalculator(object):
 		if candidate.years_experience >= employer.required_years_experience:
 			utility += employer.weights['required_years_experience'] * (candidate.years_experience - employer.required_years_experience)
 
-		# Coding Exam: random gaussian distribution with higher standard deviation the lower the GPA
-		gpa_score = (candidate.gpa/4.0)*8.0
-		if 10.0 - gpa_score <= 2.5:
-			stdev = 1.0
-		elif 10.0 - gpa_score > 2.5 and 10.0 - gpa_score < 4.0:
-			stdev = 2.0
-		else:
-			stdev = 3.0
-
-		exam_score = random.gauss(gpa_score, stdev)
-		if exam_score > 10.0:
-			exam_score = 10.0
-		elif exam_score < 0.0:
-			exam_score = 0.0
-
-		utility += exam_score * employer.weights['coding_exam']
-
 		# Personality score utility
 		utility += employer.weights['personality_score'] * candidate.personality_score
 
@@ -128,7 +112,7 @@ class UtilityCalculator(object):
 				u += self.valuable_quality * employer.weights['projects']
 			u *= project.length_in_months
 			project_utilities.append(u)
-		m = max(project_utilities)
+		m = max(project_utilities) if len(project_utilities) > 0 else 0
 		if m != 0:
 			normalized_project_utilities = [float(u)/m for u in project_utilities]
 			for ut in project_utilities:
@@ -141,6 +125,24 @@ class UtilityCalculator(object):
 
 		# Personality score utility
 		utility += (employer.weights['personality_score'] * candidate.personality_score) * self.valuable_quality
+
+		
+		# Coding Exam: random gaussian distribution with higher standard deviation the lower the GPA
+		gpa_score = (candidate.gpa/4.0)*self.coding_exam_scale
+		if candidate.gpa > 3.7:
+			stdev = 0.15 * self.coding_exam_scale
+		elif candidate.gpa > 3.5:
+			stdev =  0.18 * self.coding_exam_scale
+		elif candidate.gpa > 3.0:
+			stdev = 0.25 * self.coding_exam_scale
+		else:
+			stdev = 0.35 * self.coding_exam_scale
+
+		exam_score = random.gauss(gpa_score, stdev)
+		if exam_score < 0.0:
+			exam_score = 0.0
+
+		utility += exam_score * employer.weights['coding_exam']
 
 
 		return utility
