@@ -128,7 +128,11 @@ class UtilityCalculator(object):
 				u += self.valuable_quality * employer.weights['projects']
 			u *= project.length_in_months
 			project_utilities.append(u)
-		m = max(project_utilities)
+
+		m = 0
+		if len(project_utilities):
+			m = max(project_utilities)
+			
 		if m != 0:
 			normalized_project_utilities = [float(u)/m for u in project_utilities]
 			for ut in project_utilities:

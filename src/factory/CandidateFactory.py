@@ -19,7 +19,11 @@ class CandidateFactory(object):
         courses = [CourseCatalog.USU_COURSES[random.choice(list(CourseCatalog.USU_COURSES.keys()))] for _ in range(5)]
         proficient_languages = ['Java', 'Python']
         proficient_languages.append(random.choice(['C++', 'C#', 'TypeScript', 'ReactJS', 'AngularJS', 'PHP', 'Scala', 'Swift', 'Kotlin', 'R']))
-        skills = ['JavaScript' 'Git', 'Agile', 'HTML', 'CSS', 'Django', 'Vue', 'Gradle', 'OOP']
+        skills = ['Git', 'Agile', 'Django', 'OOP']
+        additional_skills_options =['JavaScript', 'HTML', 'CSS', 'Vue', 'Gradle']
+
+        for _ in range(random.randint(2,4)):
+            skills.append(random.choice(additional_skills_options))
 
         for course in courses:
             for skill in course['skills']:
@@ -27,7 +31,7 @@ class CandidateFactory(object):
                     skills.append(skill)
 
 
-        years_experience = random.randint(0, 4)
+        years_experience = random.randint(0, 5)
         experience_category = None
         if years_experience > 0:
             experience_category = JobCategories.CONSTANTS[random.choice(list(JobCategories.CONSTANTS.keys()))]
@@ -98,7 +102,7 @@ class CandidateFactory(object):
         else:
             skills_pool = ['Unity', 'Maya', 'CryEngine', 'Unreal Engine', 'AI', 'Animation', 'Game Design', 'C++', 'C#', 'Gimp', 'Blender', 'Objective-C']
 
-        num_skills = random.randint(3,7)
+        num_skills = random.randint(2,8)
         while len(add_skills) < num_skills:
             choice = random.choice(skills_pool)
             if choice not in add_skills:
@@ -113,7 +117,7 @@ class CandidateFactory(object):
 
         for _ in range(random.randint(0,3)):
             temp_skills = []
-            num_skills = random.randint(1,4)
+            num_skills = random.randint(1,5)
 
             while len(temp_skills) < num_skills:
                 choice = random.choice(skills_pool)

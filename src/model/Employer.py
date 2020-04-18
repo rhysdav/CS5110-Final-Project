@@ -11,6 +11,8 @@ class Employer(object):
         max_salary_offered,
         team_score,
         weights,
+        pull_2_top_k,
+        pull_3_top_k,
         preferred_degree_name=None,
         preferred_minor_name=None):
         self.uuid = uuid
@@ -26,6 +28,8 @@ class Employer(object):
         self.max_salary_offered = max_salary_offered
         self.team_score = team_score
         self.weights = weights
+        self.pull_2_top_k = pull_2_top_k
+        self.pull_3_top_k = pull_3_top_k
 
     def set_base_utility(self, base_utility):
         self.base_utility = base_utility

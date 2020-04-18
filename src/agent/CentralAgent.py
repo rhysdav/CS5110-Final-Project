@@ -70,7 +70,7 @@ class CentralAgent(object):
                     # employer.use_resources(self.constants['pull1_time_employer'] * len(c_list))
 
 
-    def arm_pull_2(self, k):
+    def arm_pull_2(self, k=5):
         # top k candidates to interview
         # each candidate interview requires 45min
         # first interview / coding exam
@@ -80,6 +80,9 @@ class CentralAgent(object):
         # total cost candidate: 2h 45m
         # personality_score
         for employer in self.employers:
+            if not k:
+                k = employer.employer.pull_2_top_k
+
             for candidate in employer.qualified_candidates:
                 adjusted_utility = candidate[0]
                 candidate[0] = self.utility_calculator.calculateInitialMatchUtility(employer.employer, candidate[1].candidate, adjusted_utility) # update adusted utility
@@ -90,20 +93,25 @@ class CentralAgent(object):
             # employer.use_resources(self.constants['pull2_time_employer'] * k)
 
 
-    def arm_pull_3(self, k):
+    def arm_pull_3(self, k=3):
         # cost employer 5hrs
         # cost candidate 1.5h
         # meeting the team - team & personality_score
         for employer in self.employers:
+            if not k:
+                k = employer.employer.pull_3_top_k
+
             for candidate in employer.qualified_candidates:
                 adjusted_utility = candidate[0]
                 candidate[0] = self.utility_calculator.calculateFinalMatchUtility(employer.employer, candidate[1].candidate, adjusted_utility) # update adusted utility
                 candidate[1].use_resources(self.constants['pull3_time_candidate'])
             candidates = employer.qualified_candidates.copy()
-            candidates = self.sort_candidates(candidates)
-            employer.set_candidates(candidates[:k])
+            candidates = self.sort_candidates(candidates)[:k]
+            employer.set_candidates(candidates)
             # employer.use_resources(self.constants['pull3_time_employer'] * k)
-            self.final_candidates.extend(candidates)
+            for c in candidates:
+                if c[1] not in self.final_candidates:
+                    self.final_candidates.append(c[1])
 
 
     def salary_negotiation(self):
@@ -131,8 +139,7 @@ class CentralAgent(object):
                         self.employer_candidate_matches.append((False, employer_agent.employer, False))
 
             # candidate acceptance round
-            for candidate in self.final_candidates:
-                adjusted_utility, candidate_agent = candidate
+            for candidate_agent in self.final_candidates:
                 if candidate_agent not in candidates_done:
                     if len(candidate_agent.offers): # candidate may not have offers on first round, but receive offers later
                         accepted = candidate_agent.consider_offers()

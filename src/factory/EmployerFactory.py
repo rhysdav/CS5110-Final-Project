@@ -76,6 +76,8 @@ class EmployerFactory(object):
             max_salary_offered=max_salary_offered,
             team_score=random.randint(1,10),
             weights=weights,
+            pull_2_top_k=random.randint(5,12),
+            pull_3_top_k=random.randint(2,4),
             preferred_degree_name=degree_name,
             preferred_minor_name=minor_name
         )
@@ -100,11 +102,11 @@ class EmployerFactory(object):
         skills_pool = []
 
         if 'WEB_MOBILE' == job_category:
-            skills_pool = ['DevOps', 'C#', 'MySQL', 'Unit testing', 'PHP', 'Angular', 'TypeScript', 'Bootstrap', 'LESS', 'Postgres', 'MongoDB', 'JIRA', 'AWS', 'Ruby on Rails', 'Laravel', 'Symphony', 'Swift', 'ASP.NET', '.NET', 'Spring', 'jQuery', 'Node', 'Webpack', 'Yarn']
+            skills_pool = ['DevOps', 'C#', 'MySQL', 'Unit testing', 'PHP', 'Angular', 'TypeScript', 'Bootstrap', 'LESS', 'Postgres', 'MongoDB', 'JIRA', 'AWS', 'Ruby on Rails', 'Laravel', 'Symphony', 'Swift', 'ASP.NET', '.NET', 'Spring', 'jQuery', 'Node', 'Webpack', 'Yarn', 'ReactJS', 'AngularJS', 'JavaScript', 'Django', 'Python', 'Java', 'Agile', 'API', 'Cyber Security', 'Encryption', 'Authentication']
         elif 'DATA_SCIENCE_ML' == job_category:
-            skills_pool = ['Big Data', 'Statistics', 'AWS', 'Hadoop', 'Storm', 'Hive', 'Spark', 'Node', 'Webpack', 'Yarn', 'MapReduce', 'ML', 'AI', 'Tableau', 'TensorFlow', 'Keras', 'Neural Networks']
+            skills_pool = ['Big Data', 'Statistics', 'AWS', 'Hadoop', 'Storm', 'Hive', 'Spark', 'Node', 'Webpack', 'Yarn', 'MapReduce', 'ML', 'AI', 'Tableau', 'TensorFlow', 'Keras', 'Neural Networks', 'Python', 'Java']
         elif 'EMBEDDED_SYSTEMS' == job_category:
-            skills_pool = ['C', 'C++', 'Assembly', 'Microcontrollers', 'Linux', 'Architecture', 'Embedded', 'Eclipse', 'State Machines', 'Kernel', 'RTOS']
+            skills_pool = ['C', 'C++', 'Assembly', 'Microcontrollers', 'Linux', 'Architecture', 'Embedded', 'Eclipse', 'State Machines', 'Kernel', 'RTOS', 'Parallelism']
         else:
             skills_pool = ['Unity', 'Maya', 'CryEngine', 'Unreal Engine', 'AI', 'Animation', 'Game Design', 'C++', 'C#', 'Gimp', 'Blender', 'Objective-C']
 
