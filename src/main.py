@@ -1,6 +1,7 @@
 from test.candidate_factory_test import run_all as candidate_factory_test
 from test.employer_factory_test import run_all as employer_factory_test
-from test.salary_negotiation_test import check_runs as salary_negotiation
+from test.salary_negotiation_test import check_runs as salary_negotiation_test
+from test.central_agent_test import run_all as central_agent_test
 
 def run_factory_tests():
     print('Running Candidate Factory test cases...')
@@ -11,9 +12,7 @@ def run_factory_tests():
 
     print('Done.')
 
-def run():
-    pass
 
 if __name__ == '__main__':
     run_factory_tests()
-    # salary_negotiation()
+    central_agent_test()

@@ -6,7 +6,7 @@ class Employer(object):
         min_salary_offered,
         min_gpa,
         required_years_experience,
-        preferred_skils,
+        preferred_skills,
         weights,
         preferred_degree_name=None,
         preferred_minor_name=None):
@@ -17,7 +17,7 @@ class Employer(object):
         self.preferred_minor_name = preferred_minor_name
         self.min_gpa = min_gpa
         self.required_years_experience = required_years_experience
-        self.preferred_skills = preferred_skils
+        self.preferred_skills = preferred_skills
         self.min_salary_offered = min_salary_offered
         self.weights = weights
 
@@ -55,7 +55,3 @@ class Employer(object):
 
     def set_weight(self, name, weight):
         self.weights[name] = weight
-
-
-
-

@@ -6,7 +6,7 @@ class EmployerAgent(object):
     def __init__(self, employer):
         self.employer = employer
         self.resources = 7
-        self.qualified_candidates = [] # array of candidate agents
+        self.qualified_candidates = [] # array of canidates and utilities, with each element = [candidate adjusted utility, candidate agent]
         self.top_candidate = None
         self.current_offer = self.employer.min_salary_offered
         self.offer_is_too_low = False

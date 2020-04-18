@@ -62,7 +62,7 @@ class EmployerFactory(object):
             min_salary_offered=min_salary_offered,
             min_gpa=min_gpa,
             required_years_experience=required_years_experience,
-            preferred_skils=preferred_skills,
+            preferred_skills=preferred_skills,
             weights=weights,
             preferred_degree_name=degree_name,
             preferred_minor_name=minor_name
