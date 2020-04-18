@@ -87,7 +87,7 @@ def run_test_1():
     print('Results:')
     # print_employer_summary(central_agent.employers)
 
-    central_agent.arm_pull_3(k=4)
+    central_agent.arm_pull_3(k=3)
     print('\nArm pull 3 successful')
     print('Results:')
     # print_employer_summary(central_agent.employers)

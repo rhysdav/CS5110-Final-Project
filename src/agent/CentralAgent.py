@@ -1,3 +1,4 @@
+from random import randint
 from factory.CandidateFactory import CandidateFactory
 from factory.EmployerFactory import EmployerFactory
 from calculator.UtilityCalculator import UtilityCalculator
@@ -63,10 +64,16 @@ class CentralAgent(object):
 
         for category, c_list in categories.items():
             # sort candidate list according from highest utility to lowest
-            c_list = self.sort_candidates(c_list)
             for employer in self.employers:
+                emp_c_list = []
+
+                for candidate in c_list:
+                    if randint(0,1): #simulates candidate choosing to apply for job
+                        emp_c_list.append(candidate)
+
+                emp_c_list = self.sort_candidates(emp_c_list)
                 if employer.employer.employer_category == category:
-                    employer.set_candidates(c_list)
+                    employer.set_candidates(emp_c_list)
                     # employer.use_resources(self.constants['pull1_time_employer'] * len(c_list))
 
 
