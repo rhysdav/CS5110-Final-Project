@@ -50,42 +50,42 @@ def print_final_results(matches, num_employers=8, num_candidates=100):
     print('Total unfilled postions: {}'.format(cnt_failures))
     print('\nUnfilled Positions:')
 
-    for u in unfilled:
-        print('Job Category: {}'.format(u.employer_category))
-        print('Employer ID: {}'.format(u.uuid))
-        print('Allowed Salary range: ${} - ${}'.format(u.min_salary_offered, u.max_salary_offered))
+    # for u in unfilled:
+    #     print('Job Category: {}'.format(u.employer_category))
+    #     print('Employer ID: {}'.format(u.uuid))
+    #     print('Allowed Salary range: ${} - ${}'.format(u.min_salary_offered, u.max_salary_offered))
 
 
 def run_test_1():
     print('\n\n')
     print('=============== Central Agent Test #1 ===============')
     central_agent = CentralAgent()
-    central_agent.initialize()
+    central_agent.initialize(num_employers=1000, num_candidates=100)
 
-    assert len(central_agent.candidates) == 100
-    assert len(central_agent.employers) == 8
+    # assert len(central_agent.candidates) == 100
+    # assert len(central_agent.employers) == 8
     print('Central agent initialization successful')
     print('Initialized Employers:')
-    print_employer_summary(central_agent.employers)
+    # print_employer_summary(central_agent.employers)
 
     central_agent.arm_pull_1()
     print('\nArm pull 1 successful')
     print('Results:')
-    print_employer_summary(central_agent.employers)
+    # print_employer_summary(central_agent.employers)
 
     central_agent.arm_pull_2(5)
     print('\nArm pull 2 (with k = 5) successful')
     print('Results:')
-    print_employer_summary(central_agent.employers)
+    # print_employer_summary(central_agent.employers)
 
     central_agent.arm_pull_3(3)
     print('\nArm pull 3 (with k = 3) successful')
     print('Results:')
-    print_employer_summary(central_agent.employers)
+    # print_employer_summary(central_agent.employers)
 
     central_agent.salary_negotiation()
     print('Salary negotiation successful')
-    print_final_results(central_agent.employer_candidate_matches)
+    print_final_results(central_agent.employer_candidate_matches, num_employers=len(central_agent.employers), num_candidates=len(central_agent.candidates))
 
     # print_employer_summary(central_agent.employers)
 
