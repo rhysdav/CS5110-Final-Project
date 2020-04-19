@@ -5,25 +5,18 @@ class CandidateAgent(object):
 
     def __init__(self, candidate):
         self.candidate = candidate
-        self.num_applications = 1
-        self.negotiation_resources = 100
+        self.negotiation_resources = randint(3, 5)
         self.offers = [] # contains tuples with ($ offer amount, EmployerAgent)
         self.min_salary = candidate.min_salary
         self.current_highest_offer = 0
-        self.initialize_resources()
-
-    def initialize_resources(self):
-        min_resources = 5.5 # min resources to complete one application from start to acceptance
-        self.num_applications = randint(1,2)
-        self.resources = min_resources * self.num_applications
 
     def has_resources(self, required_resources=0):
-        return self.resources > required_resources
+        return self.negotiation_resources > required_resources
 
     def use_resources(self, resource_amount):
         if self.has_resources(resource_amount):
-            resources = self.resources - resource_amount
-            self.resources = resources
+            resources = self.negotiation_resources - resource_amount
+            self.negotiation_resources = resources
             return True
         return False
 
@@ -73,10 +66,10 @@ class CandidateAgent(object):
                     top_offer_from_equal =  self.check_all_offers_equal()
                     self.reset_offers()
                     if top_offer_from_equal:
-                        if randint(0,1): # if 0, candidate doesn't care about team score and will try to get a higher offer
+                        if randint(0,2) > 0: # if 1 or 2, candidate accepts based on team score
                             return (True, top_offer_from_equal[0], top_offer_from_equal[1])
                     else:
-                        if randint(0,1): # if 1, candidate will accept highest offer
+                        if randint(0,2) > 0: # if 1, candidate will accept highest offer
                             return (True, offers[0][0], offers[0][1])
                         elif self.has_resources(1):
                             # gamble for higher offer
