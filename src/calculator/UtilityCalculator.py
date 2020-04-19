@@ -66,8 +66,8 @@ class UtilityCalculator(object):
 
 		return (utility/self.max_employer_ut)*10
 
-	def calculateInitialMatchUtility(self, employer, candidate, adjusted_utility):
-		utility = adjusted_utility
+	def calculateInitialMatchUtility(self, employer, candidate):
+		utility = 0
 
 		# Field of study utility
 		if employer.preferred_degree_name == candidate.degree_name:
@@ -134,8 +134,8 @@ class UtilityCalculator(object):
 
 		return utility
 
-	def calculateFinalMatchUtility(self, employer, candidate, adjusted_utility):
-		utility = adjusted_utility
+	def calculateFinalMatchUtility(self, employer, candidate):
+		utility = 0
 
 		# Personality score utility
 		utility += (employer.weights['personality_score'] * candidate.personality_score) * self.valuable_quality

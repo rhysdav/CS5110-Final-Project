@@ -81,8 +81,7 @@ class CentralAgent(object):
                 k = employer.employer.pull_2_top_k
 
             for candidate in employer.qualified_candidates:
-                adjusted_utility = candidate[0]
-                candidate[0] = self.utility_calculator.calculateInitialMatchUtility(employer.employer, candidate[1].candidate, adjusted_utility) # update adusted utility
+                candidate[0] = self.utility_calculator.calculateInitialMatchUtility(employer.employer, candidate[1].candidate) # update adusted utility
             candidates = employer.qualified_candidates.copy()
             candidates = self.sort_candidates(candidates)
             employer.set_candidates(candidates[:k])
@@ -97,8 +96,7 @@ class CentralAgent(object):
                 k = employer.employer.pull_3_top_k
 
             for candidate in employer.qualified_candidates:
-                adjusted_utility = candidate[0]
-                candidate[0] = self.utility_calculator.calculateFinalMatchUtility(employer.employer, candidate[1].candidate, adjusted_utility) # update adusted utility
+                candidate[0] = self.utility_calculator.calculateFinalMatchUtility(employer.employer, candidate[1].candidate) # update adusted utility
             candidates = employer.qualified_candidates.copy()
             candidates = self.sort_candidates(candidates)[:k]
             employer.set_candidates(candidates)
