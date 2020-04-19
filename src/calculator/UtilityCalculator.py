@@ -72,29 +72,40 @@ class UtilityCalculator(object):
 		# Field of study utility
 		if employer.preferred_degree_name == candidate.degree_name:
 			utility += self.valuable_quality * employer.weights['preferred_degree_name']
+		else:
+			utility -= self.valuable_quality * employer.weights['preferred_degree_name']
 
 		# Preferred work category utility
 		if employer.preferred_candidate_category == candidate.experience_category:
 			utility += self.valuable_quality * employer.weights['preferred_candidate_category']
+		else:
+			utility -= self.valuable_quality * employer.weights['preferred_candidate_category']
 
 		# Minimum GPA utility
 		if candidate.gpa >= employer.min_gpa:
 			utility += self.standard_quality * employer.weights['min_gpa']
+		else:
+			utility -= self.standard_quality * employer.weights['min_gpa']
 
 		# Minor utility
 		if candidate.minor_name == employer.preferred_minor_name:
 			utility += self.standard_quality * employer.weights['preferred_minor_name']
+		else:
+			utility -= self.standard_quality * employer.weights['preferred_minor_name']
 
 		# Skills utility
 		skills = 0
+		lacking_skills = 0
 		for s in employer.preferred_skills:
 			if s in candidate.proficient_languages or s in candidate.skills:
 				skills += 1
+			else:
+				lacking_skills += 1
 		utility += skills * employer.weights['preferred_skills']
+		utility -= lacking_skills * employer.weights['preferred_skills']
 
 		# Years of experience utility
-		if candidate.years_experience >= employer.required_years_experience:
-			utility += employer.weights['required_years_experience'] * (candidate.years_experience - employer.required_years_experience)
+		utility += employer.weights['required_years_experience'] * (candidate.years_experience - employer.required_years_experience)
 
 		# Personality score utility
 		utility += employer.weights['personality_score'] * candidate.personality_score
@@ -118,6 +129,8 @@ class UtilityCalculator(object):
 			normalized_project_utilities = [float(u)/m for u in project_utilities]
 			for ut in project_utilities:
 				utility += ut
+		else:
+			utility -= self.valuable_quality * employer.weights['projects']
 
 		return utility
 

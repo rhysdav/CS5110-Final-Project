@@ -48,6 +48,12 @@ def print_final_results(matches, num_employers=8, num_candidates=100):
     print('# Total Candidates in Pool: {}'.format(num_candidates))
     print('Total filled postions: {}'.format(cnt_matches))
     print('Total unfilled postions: {}'.format(cnt_failures))
+    print('\nUnfilled Positions:')
+
+    # for u in unfilled:
+    #     print('Job Category: {}'.format(u.employer_category))
+    #     print('Employer ID: {}'.format(u.uuid))
+    #     print('Allowed Salary range: ${} - ${}'.format(u.min_salary_offered, u.max_salary_offered))
     # print('\nUnfilled Positions:')
     #
     # categories = {}
