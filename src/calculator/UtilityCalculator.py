@@ -123,6 +123,7 @@ class UtilityCalculator(object):
 				u += self.valuable_quality * employer.weights['projects']
 			u *= project.length_in_months
 			project_utilities.append(u)
+
 		m = max(project_utilities) if len(project_utilities) > 0 else 0
 		if m != 0:
 			normalized_project_utilities = [float(u)/m for u in project_utilities]
@@ -139,7 +140,7 @@ class UtilityCalculator(object):
 		# Personality score utility
 		utility += (employer.weights['personality_score'] * candidate.personality_score) * self.valuable_quality
 
-		
+
 		# Coding Exam: random gaussian distribution with higher standard deviation the lower the GPA
 		gpa_score = (candidate.gpa/4.0)*self.coding_exam_scale
 		if candidate.gpa > 3.7:

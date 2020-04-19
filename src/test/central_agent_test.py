@@ -54,13 +54,28 @@ def print_final_results(matches, num_employers=8, num_candidates=100):
     #     print('Job Category: {}'.format(u.employer_category))
     #     print('Employer ID: {}'.format(u.uuid))
     #     print('Allowed Salary range: ${} - ${}'.format(u.min_salary_offered, u.max_salary_offered))
+    # print('\nUnfilled Positions:')
+    #
+    # categories = {}
+    # for u in unfilled:
+    #     if u.employer_category in categories.keys():
+    #         categories[u.employer_category] += 1
+    #     else:
+    #         categories[u.employer_category] = 1
+    #     print('Job Category: {}'.format(u.employer_category))
+    #     print('Employer ID: {}'.format(u.uuid))
+    #     print('Allowed Salary range: ${} - ${}'.format(u.min_salary_offered, u.max_salary_offered))
+    #
+    # print (categories)
 
 
 def run_test_1():
     print('\n\n')
     print('=============== Central Agent Test #1 ===============')
     central_agent = CentralAgent()
-    central_agent.initialize(num_employers=1000, num_candidates=100)
+    num_employers=100
+    num_candidates=100
+    central_agent.initialize(num_employers=num_employers, num_candidates=num_candidates)
 
     # assert len(central_agent.candidates) == 100
     # assert len(central_agent.employers) == 8
@@ -73,20 +88,19 @@ def run_test_1():
     print('Results:')
     # print_employer_summary(central_agent.employers)
 
-    central_agent.arm_pull_2(5)
-    print('\nArm pull 2 (with k = 5) successful')
+    central_agent.arm_pull_2(k=12)
+    print('\nArm pull 2 successful')
     print('Results:')
     # print_employer_summary(central_agent.employers)
 
-    central_agent.arm_pull_3(3)
-    print('\nArm pull 3 (with k = 3) successful')
+    central_agent.arm_pull_3(k=3)
+    print('\nArm pull 3 successful')
     print('Results:')
     # print_employer_summary(central_agent.employers)
 
     central_agent.salary_negotiation()
     print('Salary negotiation successful')
-    print_final_results(central_agent.employer_candidate_matches, num_employers=len(central_agent.employers), num_candidates=len(central_agent.candidates))
-
+    print_final_results(central_agent.employer_candidate_matches, num_employers, num_candidates)
     # print_employer_summary(central_agent.employers)
 
     print('Done.')
