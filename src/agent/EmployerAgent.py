@@ -1,11 +1,11 @@
-from random import randrange
+from random import randrange, randint
 
 class EmployerAgent(object):
     '''Makes decisions on behalf of assigned agent.'''
 
     def __init__(self, employer):
         self.employer = employer
-        self.resources = 100
+        self.negotiation_resources = randint(2, 8)
         self.qualified_candidates = [] # array of canidates and utilities, with each element = [candidate adjusted utility, candidate agent]
         self.top_candidate = None
         self.current_offer = self.employer.min_salary_offered
@@ -21,12 +21,12 @@ class EmployerAgent(object):
         self.qualified_candidates.append(candidates)
 
     def has_resources(self, required_resources=0):
-        return self.resources > required_resources
+        return self.negotiation_resources > required_resources
 
     def use_resources(self, resource_amount):
         if self.has_resources(resource_amount):
-            resources = self.resources - resource_amount
-            self.resources = resources
+            resources = self.negotiation_resources - resource_amount
+            self.negotiation_resources = resources
             return True
         return False
 
@@ -53,12 +53,7 @@ class EmployerAgent(object):
             else:
                 self.current_offer = candidate.min_salary
 
-            if self.use_resources(0.75):
+            if self.use_resources(1):
                 return (candidate, (self.current_offer, self))
 
         return False
-
-
-# init some resource in hrs spent
-# each pull -= amount of resources
-# after resources spent, may not have any candidates
