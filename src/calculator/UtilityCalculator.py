@@ -11,10 +11,6 @@ class UtilityCalculator(object):
 		self.max_employer_ut = 20
 		self.coding_exam_scale = 25.0 # This is the maximum a candidate's gpa translates to their average coding exam score (e.g 4.0 gpa = 25 utility points)
 
-  #   def normalizedUtility(self, ut, max_ut):
-  #   	# Returns the normalized utility for a candidate given the maximum
-		# return (ut/max_ut)*10
-
 	def calclulateCandidateBaseUtility(self, candidate):
 		utility = 0
 

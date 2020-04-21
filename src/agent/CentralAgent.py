@@ -19,7 +19,6 @@ class CentralAgent(object):
         employers = self.employer_factory.generateEmployers(num_employers)
         employer_agents = []
         for employer in employers:
-            # add employer utility if needed
             employer_agents.append(EmployerAgent(employer))
 
         self.employers = employer_agents
@@ -43,7 +42,6 @@ class CentralAgent(object):
     def arm_pull_1(self):
         # Assign canidates to employer - application process - based on candidate category preferrence
         # Agent will pull highest canidates
-        # costs 15min per candidate to employer
         categories = {}
         for employer in self.employers:
             categories[employer.employer.employer_category] = []
@@ -69,13 +67,7 @@ class CentralAgent(object):
 
     def arm_pull_2(self, k=5):
         # top k candidates to interview
-        # each candidate interview requires 45min
-        # first interview / coding exam
-        # coding exam costs candidate 2hrs
-        # cost employer 15min to review exam result
-        # total cost employer: 1hr
-        # total cost candidate: 2h 45m
-        # personality_score
+        # first interview - employer weights applied to candidate traits
         for employer in self.employers:
             if not k:
                 k = employer.employer.pull_2_top_k
@@ -88,9 +80,8 @@ class CentralAgent(object):
 
 
     def arm_pull_3(self, k=3):
-        # cost employer 5hrs
-        # cost candidate 1.5h
-        # meeting the team - team & personality_score
+        # second interview 
+        # coding exam, personality_score
         for employer in self.employers:
             if not k:
                 k = employer.employer.pull_3_top_k

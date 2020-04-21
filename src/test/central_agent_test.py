@@ -1,13 +1,10 @@
 from agent.CentralAgent import CentralAgent
 
-
 def print_employer(employer):
     print('Employer ID: {}'.format(employer.employer.uuid))
     print('Employer category: {}'.format(employer.employer.employer_category))
     print('Preferred skills: {}'.format(', '.join(employer.employer.preferred_skills)))
     print('Number of applicants: {}'.format(len(employer.qualified_candidates)))
-    print('Remaining resources: {}'.format(employer.resources))
-
 
 def print_candidate(candidate, salary):
     print('\nCandidate ID: {}'.format(candidate.uuid))
@@ -92,7 +89,7 @@ def compute_avgs(matched_candidates, all_candidates):
             continue
         else:
             print('{}: {}'.format(k, categories[k+'_UTILITY']/len(categories[k])))
-            
+
 
 def run_test_1():
     print('\n\n')
@@ -102,25 +99,26 @@ def run_test_1():
     num_candidates=100
     central_agent.initialize(num_employers=num_employers, num_candidates=num_candidates)
 
-    # assert len(central_agent.candidates) == 100
-    # assert len(central_agent.employers) == 8
+    assert len(central_agent.candidates) == num_candidates
+    assert len(central_agent.employers) == num_employers
+
     print('Central agent initialization successful')
-    print('Initialized Employers:')
+    # print('Initialized Employers:')
     # print_employer_summary(central_agent.employers)
 
     central_agent.arm_pull_1()
     print('\nArm pull 1 successful')
-    print('Results:')
+    # print('Results:')
     # print_employer_summary(central_agent.employers)
 
     central_agent.arm_pull_2(k=12)
     print('\nArm pull 2 successful')
-    print('Results:')
+    # print('Results:')
     # print_employer_summary(central_agent.employers)
 
     central_agent.arm_pull_3(k=3)
     print('\nArm pull 3 successful')
-    print('Results:')
+    # print('Results:')
     # print_employer_summary(central_agent.employers)
 
     central_agent.salary_negotiation()
@@ -147,10 +145,10 @@ def run_test_2():
     central_agent.arm_pull_1()
     print('\nArm pull 1 successful')
 
-    central_agent.arm_pull_2(k=3)
+    central_agent.arm_pull_2(k=12)
     print('\nArm pull 2 successful')
 
-    central_agent.arm_pull_3(k=1)
+    central_agent.arm_pull_3(k=3)
     print('\nArm pull 3 successful')
 
     central_agent.salary_negotiation()
@@ -166,5 +164,5 @@ def run_test_2():
     print('Done.')
 
 def run_all():
-    # run_test_1()
+    run_test_1()
     run_test_2()

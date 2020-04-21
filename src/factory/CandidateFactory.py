@@ -111,7 +111,6 @@ class CandidateFactory(object):
         return add_skills
 
     def generateCandidateProjects(self, courses):
-        # please add any additional skills you can think of
         skills_pool = ['Django', 'JavaScript', 'Game development', 'Technial Writing', 'AI', 'ML', 'Web Application', 'Neural Networks', 'Cryptosystem', 'Embedded System', 'System design', 'Computer Vision', 'Compiliers', 'AWS', 'SQL', 'Node']
         projects = []
 

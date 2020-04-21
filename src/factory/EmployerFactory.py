@@ -10,28 +10,6 @@ from calculator.UtilityCalculator import UtilityCalculator
 class EmployerFactory(object):
     """
     Generates Employer criteria.
-
-    -------- NOTES --------
-    employer category == preferred candidate category?
-
-    SALARY
-        * Should employers have a max salary?
-        * min salary offered goes up $10,000 for each one year of experience
-
-    SKILLS
-        * Preferred skills generated for an employer are the same for candidates currently
-        * those skills could have weights assigned to them, signifying which skills are desired
-
-    DEGREE & MINOR
-        * How should minors and degrees be determined?
-
-    GPA
-        * min accepted GPA is random between 2.0 and 4.0
-        * should there even be a GPA associated with Employer?
-
-    WEIGHTING
-
-
     """
 
     def __init__(self):
